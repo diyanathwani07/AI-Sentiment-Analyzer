@@ -2,12 +2,86 @@
 <html>
 <head>
     <title>AI Sentiment Analyzer</title>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/master.css') }}">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+        }
+
+        .container {
+            width: 50%;
+            margin: auto;
+            margin-top: 80px;
+            padding: 30px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0px 0px 20px rgba(0,0,0,0.3);
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            border-radius: 10px;
+            padding: 10px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            background: #22c55e;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #16a34a;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 12px;
+            background: rgba(0,0,0,0.4);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        .positive {
+            color: #22c55e;
+        }
+
+        .negative {
+            color: #ef4444;
+        }
+
+        .subtitle {
+            color: #9ca3af;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
+
 <body>
 
 <div class="container">
+
     <h1>💬 AI Sentiment Analyzer</h1>
+    <p class="subtitle">AI-powered sentiment analysis in real-time 🚀</p>
 
     <form action="/predict" method="post">
         <textarea name="text" placeholder="Type something like 'I love this product...'"></textarea>
@@ -16,15 +90,16 @@
 
     {% if prediction %}
         <div class="result">
+            <p><b>You said:</b> {{ user_text }}</p>
 
-            <p><strong>You entered:</strong></p>
-            <div class="user-text">{{ user_text }}</div>
+            <h2 class="{{ 'positive' if prediction == 'Positive 😊' else 'negative' }}">
+                {{ prediction }}
+            </h2>
 
-            <h2>{{ prediction }}</h2>
             <p>Confidence: {{ confidence }}%</p>
-
         </div>
     {% endif %}
+
 </div>
 
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
