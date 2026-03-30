@@ -1,15 +1,30 @@
 import pickle
+import os
 
 def predict_sentiment(text):
-    model = pickle.load(open('model.pkl','rb'))
-    vectorizer = pickle.load(open('vectorizer.pkl','rb'))
+    try:
+        # Get current file path
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-    vector = vectorizer.transform([text])
-    prediction = model.predict(vector)[0]
-    proba = model.predict_proba(vector)
+        # Correct paths for Render
+        model_path = os.path.join(BASE_DIR, "../model.pkl")
+        vectorizer_path = os.path.join(BASE_DIR, "../vectorizer.pkl")
 
-    confidence = round(max(proba[0]) * 100, 2)
+        # Load model
+        model = pickle.load(open(model_path, 'rb'))
+        vectorizer = pickle.load(open(vectorizer_path, 'rb'))
 
-    sentiment = "Positive 😊" if prediction == 1 else "Negative 😠"
+        # Transform input
+        vector = vectorizer.transform([text])
 
-    return sentiment, confidence
+        prediction = model.predict(vector)[0]
+        proba = model.predict_proba(vector)
+
+        confidence = round(max(proba[0]) * 100, 2)
+
+        sentiment = "Positive 😊" if prediction == 1 else "Negative 😠"
+
+        return sentiment, confidence
+
+    except Exception as e:
+        return "Error", str(e)
