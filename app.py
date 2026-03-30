@@ -1,34 +1,19 @@
-from flask import Flask, render_template, request
+import streamlit as st
+from Classes.text_to_sentiment import predict_sentiment
 
-app = Flask(__name__)
+st.set_page_config(page_title="AI Sentiment Analyzer", page_icon="💬")
 
-# Home route
-@app.route('/')
-def home():
-    return render_template('home.html')
+st.title("💬 AI Sentiment Analyzer")
 
+text = st.text_area("Enter your text:")
 
-# Prediction route
-@app.route('/predict', methods=['POST'])
-def predict():
-    text = request.form['text']
-
-    try:
-        from Classes.text_to_sentiment import predict_sentiment
+if st.button("Analyze"):
+    if text.strip() != "":
         result, confidence = predict_sentiment(text)
-    except Exception as e:
-        result = "Error"
-        confidence = "0"
-        print(e)
 
-    return render_template(
-        'home.html',
-        user_text=text,
-        prediction=result,
-        confidence=confidence
-    )
-
-
-# Run app
-if __name__ == "__main__":
-    app.run(debug=True)
+        st.subheader("Result")
+        st.write(f"**You entered:** {text}")
+        st.success(result)
+        st.info(f"Confidence: {confidence}%")
+    else:
+        st.warning("Please enter some text!")
