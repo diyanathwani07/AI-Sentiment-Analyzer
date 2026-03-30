@@ -1,73 +1,31 @@
-import streamlit as st
+from flask import Flask, render_template, request
 from Classes.text_to_sentiment import predict_sentiment
+import os
 
-# Page config
-st.set_page_config(page_title="AI Sentiment Analyzer", page_icon="💬", layout="centered")
+app = Flask(__name__)
 
-# 🔥 CUSTOM CSS (IMPORTANT)
-st.markdown("""
-    <style>
-    body {
-        background: linear-gradient(135deg, #0f172a, #1e293b);
-        color: white;
-    }
+@app.route('/')
+def home():
+    return render_template('home.html')
 
-    .main {
-        background-color: rgba(255,255,255,0.03);
-        padding: 30px;
-        border-radius: 15px;
-    }
+@app.route('/predict', methods=['POST'])
+def predict():
+    text = request.form['text']
 
-    textarea {
-        border-radius: 10px !important;
-    }
-
-    .stButton>button {
-        background: #22c55e;
-        color: white;
-        border-radius: 10px;
-        padding: 10px 20px;
-        border: none;
-        transition: 0.3s;
-    }
-
-    .stButton>button:hover {
-        background: #16a34a;
-    }
-
-    .result-box {
-        padding: 20px;
-        border-radius: 12px;
-        margin-top: 20px;
-        background: rgba(0,0,0,0.4);
-        animation: fadeIn 0.5s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-        from {opacity: 0;}
-        to {opacity: 1;}
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# Title
-st.title("💬 AI Sentiment Analyzer")
-
-# Input
-text = st.text_area("Enter your text:")
-
-# Button
-if st.button("Analyze"):
-    if text.strip() != "":
+    try:
         result, confidence = predict_sentiment(text)
+    except Exception as e:
+        result = "Error"
+        confidence = "0"
+        print(e)
 
-        st.markdown(f"""
-        <div class="result-box">
-            <p><b>You entered:</b><br>{text}</p>
-            <h2>{result}</h2>
-            <p>Confidence: {confidence}%</p>
-        </div>
-        """, unsafe_allow_html=True)
+    return render_template(
+        'home.html',
+        user_text=text,
+        prediction=result,
+        confidence=confidence
+    )
 
-    else:
-        st.warning("Please enter some text!")
+# Render compatible run
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
