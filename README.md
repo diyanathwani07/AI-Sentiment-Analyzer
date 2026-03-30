@@ -49,7 +49,4 @@ Diya Nathwani 💖
 If you like this project, give it a ⭐ on GitHub!
 
 ---
-🎨 Colorful badges
-💼 Professional
-💯 Portfolio-ready
 
