@@ -49,23 +49,6 @@ Diya Nathwani 💖
 If you like this project, give it a ⭐ on GitHub!
 
 ---
-
-# 🚀 HOW TO USE
-
-1. Open `README.md`  
-2. Replace everything with above code  
-3. Save  
-4. Push:
-
-```bash
-git add README.md
-git commit -m "updated README"
-git push
-
-🔥 RESULT
-
-Your GitHub will look:
-
 🎨 Colorful badges
 💼 Professional
 💯 Portfolio-ready
