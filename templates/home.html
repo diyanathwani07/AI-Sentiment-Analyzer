@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Sentiment Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/master.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>💬 AI Sentiment Analyzer</h1>
+
+    <form action="/predict" method="post">
+        <textarea name="text" placeholder="Type something like 'I love this product...'"></textarea>
+        <button type="submit">Analyze</button>
+    </form>
+
+    {% if prediction %}
+        <div class="result">
+
+            <p><strong>You entered:</strong></p>
+            <div class="user-text">{{ user_text }}</div>
+
+            <h2>{{ prediction }}</h2>
+            <p>Confidence: {{ confidence }}%</p>
+
+        </div>
+    {% endif %}
+</div>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+</body>
+</html>
